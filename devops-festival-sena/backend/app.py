@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from datetime import datetime
+from datetime import datetime, timezone
 import os
 import json
 import logging
@@ -112,7 +112,7 @@ def health():
     return jsonify({
         "status": "healthy",
         "service": "devops-festival-backend",
-        "timestamp": datetime.utcnow().isoformat() + "Z"
+        "timestamp": datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')
     }), 200
 
 @app.route('/api/festival')

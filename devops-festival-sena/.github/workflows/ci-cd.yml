@@ -78,7 +78,7 @@ jobs:
       - name: Crear ZIP de entrega
         run: |
           apt-get update && apt-get install -y zip || true
-          zip -r devops_submission.zip devops-festival-sena festival-devops concierto-app docs || true
+          zip -r devops_submission.zip . -x '.git/*' '.github/*' '*/__pycache__/*' '*/.pytest_cache/*' || true
 
       - name: Subir artefactos
         uses: actions/upload-artifact@v4
@@ -98,7 +98,7 @@ jobs:
       - name: Levantar servicios con Docker Compose
         run: |
           docker compose up -d --build
-        working-directory: ./devops-festival-sena
+        working-directory: .
 
       - name: Esperar servicios
         run: sleep 10
@@ -115,16 +115,16 @@ jobs:
         run: |
           docker compose logs backend > backend_compose.log || true
           docker compose logs > full_compose.log || true
-        working-directory: ./devops-festival-sena
+        working-directory: .
 
       - name: Subir logs como artefactos
         uses: actions/upload-artifact@v4
         with:
           name: integration-logs
           path: |
-            devops-festival-sena/backend_compose.log
-            devops-festival-sena/full_compose.log
+            backend_compose.log
+            full_compose.log
 
       - name: Bajar servicios
         run: docker compose down -v
-        working-directory: ./devops-festival-sena
+        working-directory: .

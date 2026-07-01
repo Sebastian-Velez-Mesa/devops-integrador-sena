@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Lineup de artistas del SENA DevOps & Cloud Fest 2026." />
+  <title>Artistas – SENA DevOps Fest</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-logo">
+      <span class="logo-icon">🚀</span>
+      <span class="logo-text">DevOps<span class="accent">Fest</span></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link">Inicio</a></li>
+      <li><a href="artistas.html" class="nav-link active">Artistas</a></li>
+      <li><a href="tickets.html" class="nav-link">Tickets</a></li>
+      <li><a href="contacto.html" class="nav-link">Contacto</a></li>
+    </ul>
+    <a href="tickets.html" class="btn-nav" id="btn-nav-tickets">Reservar Cupo</a>
+  </nav>
+
+  <!-- LINEUP SECTION -->
+  <section class="lineup-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Calendario y Programación</span>
+        <h2 class="section-title">El Lineup de la <span class="gradient-text">Nube</span></h2>
+        <p class="section-desc">
+          Filtra las presentaciones por escenario para planificar tu ruta de aprendizaje y diversión. Los datos son consumidos directamente del servicio Backend en Flask.
+        </p>
+      </div>
+
+      <!-- Fallback Alert -->
+      <div id="fallback-alert" style="display: none; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 1rem; border-radius: var(--border-radius-md); text-align: center; margin-bottom: 2rem; color: var(--color-danger); font-weight: 600;">
+        ⚠️ El Backend no responde. Mostrando datos locales (Offline Fallback Mode).
+      </div>
+
+      <!-- Filtros -->
+      <div class="filters-container" id="filters-container">
+        <button class="filter-btn active" onclick="filterStage('todos')">Todos los Escenarios</button>
+        <button class="filter-btn" onclick="filterStage('DevOps Stage')">DevOps Stage</button>
+        <button class="filter-btn" onclick="filterStage('Cloud Stage')">Cloud Stage</button>
+        <button class="filter-btn" onclick="filterStage('Main Stage')">Main Stage</button>
+      </div>
+
+      <!-- Grid de Artistas -->
+      <div class="artists-grid" id="artists-grid">
+        <!-- Cargando... -->
+        <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 1.2rem; padding: 3rem 0;">
+          Cargando artistas desde el API de contenedores...
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="nav-logo">
+          <span class="logo-icon">🚀</span>
+          <span class="logo-text">DevOps<span class="accent">Fest</span> 2026</span>
+        </div>
+        <nav class="footer-nav">
+          <a href="index.html">Inicio</a>
+          <a href="artistas.html">Artistas</a>
+          <a href="tickets.html">Tickets</a>
+          <a href="contacto.html">Contacto</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 SENA DevOps Fest. Desarrollado colaborativamente bajo cultura DevOps.</p>
+        <div class="footer-tech">
+          <span class="tech-tag">HTML5/CSS3</span>
+          <span class="tech-tag">Flask API</span>
+          <span class="tech-tag">Docker Compose</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    const backendUrl = "http://localhost:5000";
+    let artistasData = [];
+
+    // Datos estáticos de respaldo (Offline Fallback)
+    const fallbackArtistas = [
+      {"id": 1, "nombre": "Docker DJ (Offline)", "genero": "Techno/House", "escenario": "DevOps Stage", "hora": "19:00", "descripcion": "Loops rítmicos optimizados en microsegundos y beats basados en contenedores."},
+      {"id": 2, "nombre": "The Kubernetes Trio (Offline)", "genero": "Jazz Fusion", "escenario": "Cloud Stage", "hora": "20:30", "descripcion": "Orquestación armónica autogestionada con cero tiempo de inactividad."},
+      {"id": 3, "nombre": "CI/CD Soundsystem (Offline)", "genero": "Electropop", "escenario": "Main Stage", "hora": "22:00", "descripcion": "Lanzamientos continuos de sintetizadores y pipelines musicales fluidos."},
+      {"id": 4, "nombre": "Git Merge Band (Offline)", "genero": "Rock Alternativo", "escenario": "DevOps Stage", "hora": "17:30", "descripcion": "Riffs potentes sin conflictos de fusión y solos limpios en la rama main."},
+      {"id": 5, "nombre": "Nginx & The Proxies (Offline)", "genero": "Chillwave", "escenario": "Cloud Stage", "hora": "16:00", "descripcion": "Sonidos envolventes y balanceo de carga auditivo de alta eficiencia."},
+      {"id": 6, "nombre": "Python Beats (Offline)", "genero": "Minimal Tech", "escenario": "Main Stage", "hora": "18:00", "descripcion": "Scripts musicales legibles y dinámicos que corren de forma síncrona."}
+    ];
+
+    async function loadArtists() {
+      const grid = document.getElementById('artists-grid');
+      const fallbackAlert = document.getElementById('fallback-alert');
+      try {
+        const response = await fetch(`${backendUrl}/api/artistas`);
+        if (!response.ok) throw new Error("Error en respuesta de API");
+        const resJson = await response.json();
+        artistasData = resJson.data;
+        fallbackAlert.style.display = 'none';
+      } catch (error) {
+        console.warn("No se pudo conectar con el backend. Cargando datos locales.", error);
+        artistasData = fallbackArtistas;
+        fallbackAlert.style.display = 'block';
+      }
+      renderArtists(artistasData);
+    }
+
+    function renderArtists(list) {
+      const grid = document.getElementById('artists-grid');
+      grid.innerHTML = "";
+      if (list.length === 0) {
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 3rem 0;">No se encontraron artistas para esta selección.</div>`;
+        return;
+      }
+      list.forEach(a => {
+        const card = document.createElement('div');
+        card.className = 'artist-card';
+        card.innerHTML = `
+          <div class="artist-body">
+            <div class="artist-meta">
+              <span class="artist-genre">${a.genero}</span>
+              <span class="artist-time">🕒 ${a.hora}</span>
+            </div>
+            <h3 class="artist-name">${a.nombre}</h3>
+            <p class="artist-desc">${a.descripcion}</p>
+            <div class="artist-footer">
+              <span class="artist-stage">📍 ${a.escenario}</span>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function filterStage(stage) {
+      // Activar botón correspondiente
+      const btns = document.querySelectorAll('.filter-btn');
+      btns.forEach(btn => {
+        if (btn.textContent.includes(stage) || (stage === 'todos' && btn.textContent.includes('Todos'))) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      if (stage === 'todos') {
+        renderArtists(artistasData);
+      } else {
+        const filtered = artistasData.filter(a => a.escenario.toLowerCase() === stage.toLowerCase());
+        renderArtists(filtered);
+      }
+    }
+
+    // Cargar artistas al inicializar la página
+    window.addEventListener('load', loadArtists);
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+  </script>
+</body>
+</html>

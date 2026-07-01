@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Adquiere tus pases para el SENA DevOps & Cloud Fest 2026." />
+  <title>Tickets – SENA DevOps Fest</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-logo">
+      <span class="logo-icon">🚀</span>
+      <span class="logo-text">DevOps<span class="accent">Fest</span></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link">Inicio</a></li>
+      <li><a href="artistas.html" class="nav-link">Artistas</a></li>
+      <li><a href="tickets.html" class="nav-link active">Tickets</a></li>
+      <li><a href="contacto.html" class="nav-link">Contacto</a></li>
+    </ul>
+    <a href="tickets.html" class="btn-nav" id="btn-nav-tickets">Reservar Cupo</a>
+  </nav>
+
+  <!-- TICKETS SECTION -->
+  <section class="tickets-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Pases Académicos y de Acceso</span>
+        <h2 class="section-title">Elige Tu Nivel de <span class="gradient-text">Acceso</span></h2>
+        <p class="section-desc">
+          Los pases son limitados. Selecciona tu ticket y regístrate. Al registrarte, tus datos serán almacenados permanentemente en el volumen del contenedor.
+        </p>
+      </div>
+
+      <!-- Fallback Alert -->
+      <div id="fallback-alert" style="display: none; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 1rem; border-radius: var(--border-radius-md); text-align: center; margin-bottom: 2rem; color: var(--color-danger); font-weight: 600;">
+        ⚠️ El Backend no responde. Mostrando tickets estáticos de respaldo.
+      </div>
+
+      <!-- Grid de Tickets -->
+      <div class="tickets-grid" id="tickets-grid">
+        <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 1.2rem; padding: 3rem 0;">
+          Consultando disponibilidad de tickets...
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL DE COMPRA / RESERVA -->
+  <div class="modal" id="ticket-modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      <h3 class="modal-title">Confirmar Registro</h3>
+      <form id="booking-form" onsubmit="submitBooking(event)">
+        <input type="hidden" id="modal-ticket-id" />
+        <div class="modal-body">
+          <p id="modal-ticket-desc" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;"></p>
+          
+          <div class="form-group">
+            <label for="booking-name">Nombre Completo</label>
+            <input type="text" id="booking-name" class="form-input" placeholder="Ej. Carlos Pérez" required />
+          </div>
+
+          <div class="form-group">
+            <label for="booking-email">Correo Electrónico</label>
+            <input type="email" id="booking-email" class="form-input" placeholder="carlos@sena.edu.co" required />
+          </div>
+
+          <div class="form-group">
+            <label for="booking-comments">Comentarios / Requerimientos</label>
+            <textarea id="booking-comments" class="form-input" placeholder="Ej. Soy aprendiz de la tecnología ADSO."></textarea>
+          </div>
+
+          <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">Confirmar Reserva y Guardar en Volumen</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- FLOATING NOTIFICATION CONTAINER -->
+  <div class="notification-container" id="notification-container"></div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="nav-logo">
+          <span class="logo-icon">🚀</span>
+          <span class="logo-text">DevOps<span class="accent">Fest</span> 2026</span>
+        </div>
+        <nav class="footer-nav">
+          <a href="index.html">Inicio</a>
+          <a href="artistas.html">Artistas</a>
+          <a href="tickets.html">Tickets</a>
+          <a href="contacto.html">Contacto</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 SENA DevOps Fest. Desarrollado colaborativamente bajo cultura DevOps.</p>
+        <div class="footer-tech">
+          <span class="tech-tag">HTML5/CSS3</span>
+          <span class="tech-tag">Flask API</span>
+          <span class="tech-tag">Docker Compose</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    const backendUrl = "http://localhost:5000";
+    let ticketsData = [];
+
+    // Tickets de respaldo (Offline Fallback)
+    const fallbackTickets = [
+      {"id": 1, "tipo": "Acceso General (Dev) - Offline", "precio": 60000, "moneda": "COP", "disponibles": 3000, "descripcion": "Entrada general para los 3 días de talleres y conciertos tech."},
+      {"id": 2, "tipo": "Pase VIP (Ops) - Offline", "precio": 150000, "moneda": "COP", "disponibles": 400, "descripcion": "Acceso preferente a primera fila + Catering ilimitado + Gorra exclusiva Docker."},
+      {"id": 3, "tipo": "Full Stack Pass - Offline", "precio": 350000, "moneda": "COP", "disponibles": 50, "descripcion": "Acceso VIP completo + Meet & Greet con los expositores + Cena DevOps final."},
+      {"id": 4, "tipo": "Estudiante CTMA - Offline", "precio": 0, "moneda": "COP", "disponibles": 1000, "descripcion": "Entrada gratuita para aprendices SENA activos (requiere verificación de carnet)."}
+    ];
+
+    async function loadTickets() {
+      const fallbackAlert = document.getElementById('fallback-alert');
+      try {
+        const response = await fetch(`${backendUrl}/api/tickets`);
+        if (!response.ok) throw new Error("Error en respuesta de API");
+        const resJson = await response.json();
+        ticketsData = resJson.data;
+        fallbackAlert.style.display = 'none';
+      } catch (error) {
+        console.warn("No se pudo conectar con el backend. Cargando tickets locales.", error);
+        ticketsData = fallbackTickets;
+        fallbackAlert.style.display = 'block';
+      }
+      renderTickets(ticketsData);
+    }
+
+    function renderTickets(list) {
+      const grid = document.getElementById('tickets-grid');
+      grid.innerHTML = "";
+      list.forEach(t => {
+        const isFeatured = t.id === 2; // VIP recomendado
+        const formattedPrice = t.precio === 0 ? "Gratis" : `$${t.precio.toLocaleString()} ${t.moneda}`;
+        
+        const card = document.createElement('div');
+        card.className = `ticket-card ${isFeatured ? 'featured' : ''}`;
+        card.innerHTML = `
+          <div class="ticket-header">
+            <h3>${t.tipo}</h3>
+            <div class="ticket-price">
+              <span class="price-val">${formattedPrice}</span>
+            </div>
+          </div>
+          <p class="ticket-desc">${t.descripcion}</p>
+          <div>
+            <span class="ticket-avail">⏳ Quedan ${t.disponibles} pases</span>
+            <button onclick="openModal(${t.id}, '${t.tipo}', '${formattedPrice}')" class="btn-primary" style="width: 100%">Adquirir Pase</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // Funciones del Modal
+    function openModal(id, tipo, precio) {
+      document.getElementById('modal-ticket-id').value = id;
+      document.getElementById('modal-ticket-desc').innerHTML = `Has seleccionado el pase: <strong>${tipo}</strong> (${precio}). Por favor, ingresa tus datos para guardar el registro persistente.`;
+      document.getElementById('ticket-modal').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('ticket-modal').classList.remove('open');
+      document.getElementById('booking-form').reset();
+    }
+
+    // Mostrar notificaciones
+    function showNotification(message, type = 'success') {
+      const container = document.getElementById('notification-container');
+      const notif = document.createElement('div');
+      notif.className = `notification ${type}`;
+      notif.innerHTML = `
+        <span class="notification-msg">${message}</span>
+        <button class="notification-close" onclick="this.parentElement.remove()">×</button>
+      `;
+      container.appendChild(notif);
+
+      // Eliminar después de 4 segundos
+      setTimeout(() => {
+        notif.style.opacity = '0';
+        setTimeout(() => notif.remove(), 300);
+      }, 4000);
+    }
+
+    // Enviar Registro a la API (POST)
+    async function submitBooking(event) {
+      event.preventDefault();
+      const ticketId = document.getElementById('modal-ticket-id').value;
+      const nombre = document.getElementById('booking-name').value;
+      const email = document.getElementById('booking-email').value;
+      const comentarios = document.getElementById('booking-comments').value;
+
+      const payload = {
+        nombre: nombre,
+        email: email,
+        mensaje: `Reserva de pase ID #${ticketId}. Comentarios: ${comentarios}`,
+        ticket_id: parseInt(ticketId)
+      };
+
+      try {
+        const response = await fetch(`${backendUrl}/api/contacto`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const resJson = await response.json();
+        
+        if (response.ok) {
+          showNotification(`✅ ¡Pase reservado con éxito! Registro persistido en el volumen Docker.`, 'success');
+          closeModal();
+        } else {
+          showNotification(`❌ Error al reservar: ${resJson.message}`, 'error');
+        }
+      } catch (error) {
+        showNotification(`⚠️ No se pudo conectar con el Backend. Los datos no se guardaron.`, 'error');
+        console.error("Error al registrar reserva:", error);
+      }
+    }
+
+    // Cargar tickets al iniciar la página
+    window.addEventListener('load', loadTickets);
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+  </script>
+</body>
+</html>

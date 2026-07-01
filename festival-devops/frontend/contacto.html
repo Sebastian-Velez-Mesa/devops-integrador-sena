@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Contacta al equipo del Festival DevOps Music Fest 2026 – Estamos aquí para responder tus preguntas." />
+  <title>Contacto – Festival DevOps Music Fest 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .page-hero { padding:10rem 0 5rem; text-align:center; position:relative; overflow:hidden; }
+    .page-hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(245,158,11,.2) 0%,transparent 70%); z-index:0; }
+    .page-hero .container { position:relative; z-index:1; }
+
+    .contacto-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 4rem;
+      padding: 3rem 0 6rem;
+      align-items: start;
+    }
+
+    /* Info lateral */
+    .contacto-info { display:flex; flex-direction:column; gap:1.5rem; }
+    .info-card {
+      background:var(--clr-surface2);
+      border:1px solid var(--clr-border);
+      border-radius:var(--radius);
+      padding:1.4rem 1.6rem;
+      display:flex; align-items:flex-start; gap:1rem;
+      transition:var(--transition);
+    }
+    .info-card:hover { border-color:var(--clr-primary); transform:translateX(4px); }
+    .info-icon { font-size:1.8rem; flex-shrink:0; }
+    .info-label { color:var(--clr-muted); font-size:.8rem; font-weight:600; text-transform:uppercase; letter-spacing:.08em; margin-bottom:.2rem; }
+    .info-value { font-family:var(--font-main); font-weight:700; font-size:1rem; }
+
+    .faq-section { margin-top:2rem; }
+    .faq-title { font-family:var(--font-main); font-weight:700; font-size:1.1rem; margin-bottom:1rem; color:var(--clr-muted); }
+    .faq-item {
+      border:1px solid var(--clr-border);
+      border-radius:var(--radius);
+      overflow:hidden;
+      margin-bottom:.6rem;
+    }
+    .faq-q {
+      width:100%; text-align:left; background:var(--clr-surface2);
+      border:none; padding:1rem 1.2rem;
+      color:var(--clr-text); font-family:var(--font-body); font-size:.9rem; font-weight:500;
+      cursor:pointer; display:flex; justify-content:space-between; align-items:center;
+      transition:var(--transition);
+    }
+    .faq-q:hover { color:var(--clr-primary2); }
+    .faq-q .arrow { transition:var(--transition); color:var(--clr-muted); }
+    .faq-item.open .faq-q .arrow { transform:rotate(180deg); color:var(--clr-primary); }
+    .faq-a {
+      max-height:0; overflow:hidden; transition:.35s ease;
+      background:var(--clr-surface); border-top:1px solid var(--clr-border);
+    }
+    .faq-item.open .faq-a { max-height:200px; }
+    .faq-a p { padding:1rem 1.2rem; color:var(--clr-muted); font-size:.875rem; line-height:1.7; }
+
+    /* Formulario */
+    .contacto-form-wrapper {
+      background:var(--clr-surface2);
+      border:1px solid var(--clr-border);
+      border-radius:var(--radius-lg);
+      padding:2.5rem;
+      position:relative;
+      overflow:hidden;
+    }
+    .contacto-form-wrapper::before {
+      content:'';
+      position:absolute; top:0; left:0; right:0; height:4px;
+      background:var(--gradient-warm);
+    }
+    .form-title { font-family:var(--font-main); font-size:1.6rem; font-weight:900; margin-bottom:.5rem; }
+    .form-subtitle { color:var(--clr-muted); font-size:.9rem; margin-bottom:2rem; }
+
+    .form-group { display:flex; flex-direction:column; gap:.4rem; margin-bottom:1.2rem; }
+    .form-group label { font-size:.85rem; color:var(--clr-muted); font-weight:500; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background:var(--clr-surface); border:1px solid var(--clr-border);
+      border-radius:.6rem; padding:.75rem 1rem;
+      color:var(--clr-text); font-family:var(--font-body); font-size:.95rem;
+      transition:var(--transition); outline:none;
+      width:100%;
+    }
+    .form-group select option { background:var(--clr-surface2); }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color:var(--clr-primary);
+      box-shadow:0 0 0 3px rgba(124,58,237,.15);
+    }
+    .form-group textarea { resize:vertical; min-height:130px; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+
+    .char-count { font-size:.75rem; color:var(--clr-muted); text-align:right; }
+
+    .form-submit {
+      width:100%; padding:.95rem;
+      background:var(--gradient-warm);
+      color:#fff; font-family:var(--font-main);
+      font-weight:700; font-size:1rem;
+      border:none; border-radius:999px;
+      cursor:pointer; transition:var(--transition);
+      box-shadow:0 4px 20px rgba(245,158,11,.3);
+      position:relative; overflow:hidden;
+    }
+    .form-submit:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(245,158,11,.5); }
+    .form-submit:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+
+    .success-msg {
+      display:none; text-align:center; padding:3rem 1rem;
+    }
+    .success-msg.show { display:block; animation:fadeInUp .4s ease; }
+    .success-msg .s-icon { font-size:4rem; margin-bottom:1rem; }
+    .success-msg h3 { font-family:var(--font-main); font-size:1.6rem; font-weight:900; margin-bottom:.8rem; }
+    .success-msg p { color:var(--clr-muted); line-height:1.7; }
+
+    @media(max-width:860px) {
+      .contacto-layout { grid-template-columns:1fr; gap:2.5rem; }
+      .form-row { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar scrolled" id="navbar">
+    <div class="nav-logo"><span class="logo-icon">🎵</span><span class="logo-text">DevOps<span class="accent">Fest</span></span></div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link">Inicio</a></li>
+      <li><a href="artistas.html" class="nav-link">Artistas</a></li>
+      <li><a href="tickets.html" class="nav-link">Tickets</a></li>
+      <li><a href="contacto.html" class="nav-link active">Contacto</a></li>
+    </ul>
+    <a href="tickets.html" class="btn-nav" id="btn-nav-tickets">Comprar Entrada</a>
+  </nav>
+
+  <section class="page-hero">
+    <div class="container">
+      <span class="section-tag">Hablemos</span>
+      <h1 class="section-title">¿Tienes alguna <span class="gradient-text">pregunta</span>?</h1>
+      <p class="section-desc" style="max-width:500px;margin:0 auto;">
+        Nuestro equipo está disponible para ayudarte. Responderemos en menos de 24 horas.
+      </p>
+    </div>
+  </section>
+
+  <main>
+    <div class="container">
+      <div class="contacto-layout">
+
+        <!-- Columna izquierda -->
+        <div class="contacto-info">
+          <div class="info-card" id="info-email">
+            <span class="info-icon">📧</span>
+            <div>
+              <div class="info-label">Email</div>
+              <div class="info-value">hola@devopsfest.co</div>
+            </div>
+          </div>
+          <div class="info-card" id="info-tel">
+            <span class="info-icon">📞</span>
+            <div>
+              <div class="info-label">Teléfono</div>
+              <div class="info-value">+57 604 555 0123</div>
+            </div>
+          </div>
+          <div class="info-card" id="info-lugar">
+            <span class="info-icon">📍</span>
+            <div>
+              <div class="info-label">Lugar</div>
+              <div class="info-value">Medellín, Colombia<br/><span style="font-weight:400;color:var(--clr-muted);font-size:.85rem">Parque Explora – Área Norte</span></div>
+            </div>
+          </div>
+          <div class="info-card" id="info-horario">
+            <span class="info-icon">🕐</span>
+            <div>
+              <div class="info-label">Horario de atención</div>
+              <div class="info-value">Lun – Vie: 9am – 6pm</div>
+            </div>
+          </div>
+
+          <div class="faq-section">
+            <div class="faq-title">Preguntas frecuentes</div>
+            <div class="faq-item" id="faq-1">
+              <button class="faq-q" onclick="toggleFaq('faq-1')">¿Cuándo se realizan los reembolsos? <span class="arrow">▾</span></button>
+              <div class="faq-a"><p>Los reembolsos se procesan hasta 30 días antes del evento. Después de esa fecha, los tickets son transferibles pero no reembolsables.</p></div>
+            </div>
+            <div class="faq-item" id="faq-2">
+              <button class="faq-q" onclick="toggleFaq('faq-2')">¿Hay descuentos para grupos? <span class="arrow">▾</span></button>
+              <div class="faq-a"><p>Sí, grupos de 10+ personas reciben 15% de descuento. Contáctanos directamente para coordinar la compra grupal.</p></div>
+            </div>
+            <div class="faq-item" id="faq-3">
+              <button class="faq-q" onclick="toggleFaq('faq-3')">¿El festival es apto para menores? <span class="arrow">▾</span></button>
+              <div class="faq-a"><p>El festival es para mayores de 18 años en áreas de bebidas. Menores de edad son bienvenidos acompañados de un adulto en zonas generales.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formulario -->
+        <div class="contacto-form-wrapper" id="form-wrapper">
+          <div id="form-content">
+            <div class="form-title">Envíanos un mensaje 💬</div>
+            <div class="form-subtitle">Completa el formulario y te responderemos pronto.</div>
+            <form id="contacto-form" novalidate>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="f-nombre">Nombre *</label>
+                  <input type="text" id="f-nombre" placeholder="Tu nombre" required/>
+                </div>
+                <div class="form-group">
+                  <label for="f-email">Email *</label>
+                  <input type="email" id="f-email" placeholder="tu@email.com" required/>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="f-asunto">Asunto</label>
+                <select id="f-asunto">
+                  <option value="">Selecciona un tema...</option>
+                  <option value="tickets">Información de tickets</option>
+                  <option value="artistas">Artistas y lineup</option>
+                  <option value="prensa">Prensa y medios</option>
+                  <option value="patrocinio">Patrocinios</option>
+                  <option value="otro">Otro</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="f-mensaje">Mensaje *</label>
+                <textarea id="f-mensaje" placeholder="¿En qué podemos ayudarte?" maxlength="500" required oninput="updateChar()"></textarea>
+                <span class="char-count" id="char-count">0 / 500</span>
+              </div>
+              <button type="submit" class="form-submit" id="btn-submit">Enviar Mensaje →</button>
+            </form>
+          </div>
+          <div class="success-msg" id="success-msg">
+            <div class="s-icon">🎉</div>
+            <h3>¡Mensaje enviado!</h3>
+            <p>Gracias por contactarnos. <br/>Nuestro equipo te responderá en menos de 24 horas a tu correo electrónico.</p>
+            <button class="btn-primary" style="margin-top:1.5rem" onclick="resetForm()">Enviar otro mensaje</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand"><span class="logo-icon">🎵</span><span class="logo-text">DevOps<span class="accent">Fest</span> 2026</span></div>
+        <nav class="footer-nav"><a href="index.html">Inicio</a><a href="artistas.html">Artistas</a><a href="tickets.html">Tickets</a><a href="contacto.html">Contacto</a></nav>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Festival DevOps Music Fest · Desarrollado con ❤️ y Docker</p>
+        <p class="footer-tech"><span class="tech-tag">Flask</span><span class="tech-tag">Docker</span><span class="tech-tag">GitHub</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function toggleFaq(id) {
+      const item = document.getElementById(id);
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(f => f.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    }
+
+    function updateChar() {
+      const len = document.getElementById('f-mensaje').value.length;
+      document.getElementById('char-count').textContent = `${len} / 500`;
+    }
+
+    document.getElementById('contacto-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const nombre  = document.getElementById('f-nombre').value.trim();
+      const email   = document.getElementById('f-email').value.trim();
+      const mensaje = document.getElementById('f-mensaje').value.trim();
+      if (!nombre || !email || !mensaje) { alert('Por favor completa los campos obligatorios (*)'); return; }
+
+      const btn = document.getElementById('btn-submit');
+      btn.disabled = true;
+      btn.textContent = 'Enviando...';
+
+      // Simular llamada a la API del backend
+      await new Promise(r => setTimeout(r, 1200));
+
+      document.getElementById('form-content').style.display = 'none';
+      document.getElementById('success-msg').classList.add('show');
+    });
+
+    function resetForm() {
+      document.getElementById('contacto-form').reset();
+      document.getElementById('char-count').textContent = '0 / 500';
+      document.getElementById('btn-submit').disabled = false;
+      document.getElementById('btn-submit').textContent = 'Enviar Mensaje →';
+      document.getElementById('form-content').style.display = 'block';
+      document.getElementById('success-msg').classList.remove('show');
+    }
+
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+  </script>
+</body>
+</html>

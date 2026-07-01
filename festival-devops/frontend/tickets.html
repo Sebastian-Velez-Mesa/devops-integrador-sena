@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Compra tus entradas para el Festival DevOps Music Fest 2026 – Planes General, VIP, Backstage y Full Pass disponibles." />
+  <title>Tickets – Festival DevOps Music Fest 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .page-hero { padding:10rem 0 5rem; text-align:center; position:relative; overflow:hidden; }
+    .page-hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(6,182,212,.25) 0%,transparent 70%); z-index:0; }
+    .page-hero .container { position:relative; z-index:1; }
+
+    .tickets-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.8rem;
+      padding: 3rem 0 6rem;
+    }
+
+    .ticket-card {
+      background: var(--clr-surface2);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .ticket-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: var(--card-gradient, var(--gradient-main));
+    }
+    .ticket-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--clr-primary);
+      box-shadow: 0 16px 48px rgba(124,58,237,.25);
+    }
+    .ticket-card.featured {
+      border-color: var(--clr-primary);
+      background: linear-gradient(145deg, var(--clr-surface2), rgba(124,58,237,.08));
+    }
+
+    .ticket-popular {
+      position: absolute;
+      top: 1.2rem; right: 1.2rem;
+      background: var(--gradient-warm);
+      color: #fff;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: .3rem .8rem;
+      border-radius: 999px;
+    }
+
+    .ticket-icon { font-size: 2.5rem; }
+    .ticket-tipo {
+      font-family: var(--font-main);
+      font-size: 1.6rem;
+      font-weight: 900;
+    }
+    .ticket-precio {
+      font-family: var(--font-main);
+      font-size: 2.2rem;
+      font-weight: 900;
+      background: var(--card-gradient, var(--gradient-main));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .ticket-moneda { font-size: 1rem; opacity: .7; }
+    .ticket-desc { color: var(--clr-muted); font-size: .9rem; line-height: 1.7; }
+    .ticket-disponibles {
+      font-size: .85rem;
+      color: var(--clr-accent);
+      font-weight: 600;
+    }
+    .ticket-divider { border: none; border-top: 1px solid var(--clr-border); }
+    .ticket-perks { display:flex; flex-direction:column; gap:.6rem; }
+    .perk { display:flex; align-items:center; gap:.6rem; font-size:.875rem; color:var(--clr-muted); }
+    .perk::before { content:'✓'; color:var(--clr-accent); font-weight:700; flex-shrink:0; }
+
+    .btn-ticket {
+      margin-top: auto;
+      display: block;
+      text-align: center;
+      padding: .85rem;
+      border-radius: 999px;
+      font-family: var(--font-main);
+      font-weight: 700;
+      font-size: .95rem;
+      background: var(--card-gradient, var(--gradient-main));
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 4px 16px rgba(124,58,237,.3);
+    }
+    .btn-ticket:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(124,58,237,.5); }
+
+    /* Modal */
+    .modal-overlay {
+      display:none; position:fixed; inset:0;
+      background:rgba(0,0,0,.7); backdrop-filter:blur(8px);
+      z-index:200; align-items:center; justify-content:center;
+    }
+    .modal-overlay.open { display:flex; animation:fadeIn .2s ease; }
+    .modal {
+      background: var(--clr-surface2);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 440px;
+      position: relative;
+      animation: fadeInUp .3s ease;
+    }
+    .modal-close {
+      position:absolute; top:1rem; right:1rem;
+      background:none; border:none; color:var(--clr-muted);
+      font-size:1.4rem; cursor:pointer; transition:var(--transition);
+    }
+    .modal-close:hover { color:var(--clr-text); }
+    .modal h2 { font-family:var(--font-main); font-size:1.5rem; font-weight:900; margin-bottom:1.5rem; }
+    .form-group { display:flex; flex-direction:column; gap:.4rem; margin-bottom:1.2rem; }
+    .form-group label { font-size:.85rem; color:var(--clr-muted); font-weight:500; }
+    .form-group input {
+      background:var(--clr-surface); border:1px solid var(--clr-border);
+      border-radius:.6rem; padding:.75rem 1rem; color:var(--clr-text);
+      font-family:var(--font-body); font-size:.95rem;
+      transition:var(--transition); outline:none;
+    }
+    .form-group input:focus { border-color:var(--clr-primary); box-shadow:0 0 0 3px rgba(124,58,237,.15); }
+    .modal-success { text-align:center; padding:1rem 0; }
+    .modal-success .success-icon { font-size:3.5rem; margin-bottom:1rem; }
+    .modal-success h3 { font-family:var(--font-main); font-size:1.4rem; font-weight:900; margin-bottom:.5rem; }
+    .modal-success p { color:var(--clr-muted); }
+  </style>
+</head>
+<body>
+  <nav class="navbar scrolled" id="navbar">
+    <div class="nav-logo"><span class="logo-icon">🎵</span><span class="logo-text">DevOps<span class="accent">Fest</span></span></div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link">Inicio</a></li>
+      <li><a href="artistas.html" class="nav-link">Artistas</a></li>
+      <li><a href="tickets.html" class="nav-link active">Tickets</a></li>
+      <li><a href="contacto.html" class="nav-link">Contacto</a></li>
+    </ul>
+    <a href="tickets.html" class="btn-nav" id="btn-nav-tickets">Comprar Entrada</a>
+  </nav>
+
+  <section class="page-hero">
+    <div class="container">
+      <span class="section-tag">Entradas Disponibles</span>
+      <h1 class="section-title">Elige tu <span class="gradient-text">Experiencia</span></h1>
+      <p class="section-desc" style="max-width:500px;margin:0 auto;">
+        Cupos limitados. Asegura tu lugar en el festival del año antes de que se agoten.
+      </p>
+    </div>
+  </section>
+
+  <main>
+    <div class="container">
+      <div class="tickets-grid" id="tickets-grid"></div>
+    </div>
+  </main>
+
+  <!-- Modal de compra -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" id="modal" role="dialog" aria-modal="true">
+      <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
+      <div id="modal-body">
+        <h2>🎟️ Reservar Entrada</h2>
+        <p style="color:var(--clr-muted);margin-bottom:1.5rem;font-size:.9rem" id="modal-ticket-info"></p>
+        <div class="form-group">
+          <label for="input-nombre">Nombre completo</label>
+          <input type="text" id="input-nombre" placeholder="Tu nombre" autocomplete="name"/>
+        </div>
+        <div class="form-group">
+          <label for="input-email">Correo electrónico</label>
+          <input type="email" id="input-email" placeholder="tu@email.com" autocomplete="email"/>
+        </div>
+        <div class="form-group">
+          <label for="input-cantidad">Cantidad de entradas</label>
+          <input type="number" id="input-cantidad" min="1" max="10" value="1"/>
+        </div>
+        <button class="btn-ticket" id="btn-confirmar" style="margin-top:.5rem">Confirmar Reserva</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand"><span class="logo-icon">🎵</span><span class="logo-text">DevOps<span class="accent">Fest</span> 2026</span></div>
+        <nav class="footer-nav"><a href="index.html">Inicio</a><a href="artistas.html">Artistas</a><a href="tickets.html">Tickets</a><a href="contacto.html">Contacto</a></nav>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Festival DevOps Music Fest · Desarrollado con ❤️ y Docker</p>
+        <p class="footer-tech"><span class="tech-tag">Flask</span><span class="tech-tag">Docker</span><span class="tech-tag">GitHub</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const tickets = [
+      {
+        id:'general', tipo:'General', precio:80000, icon:'🎫',
+        desc:'Acceso a todos los escenarios los 3 días del festival.',
+        disponibles:5000, featured:false, popular:false,
+        gradient:'linear-gradient(135deg,#7c3aed,#06b6d4)',
+        perks:['Acceso a 4 escenarios','App oficial del festival','Zona de food trucks','Activaciones tech']
+      },
+      {
+        id:'vip', tipo:'VIP', precio:200000, icon:'⭐',
+        desc:'Zona VIP exclusiva + Meet & Greet con los artistas headliners.',
+        disponibles:500, featured:true, popular:true,
+        gradient:'linear-gradient(135deg,#a855f7,#f59e0b)',
+        perks:['Todo lo de General','Zona VIP preferencial','Meet & Greet headliners','Bebidas cortesía','Merch exclusivo']
+      },
+      {
+        id:'backstage', tipo:'Backstage', precio:450000, icon:'🎭',
+        desc:'Acceso total backstage + cena con artistas. Experiencia única.',
+        disponibles:50, featured:false, popular:false,
+        gradient:'linear-gradient(135deg,#ef4444,#f59e0b)',
+        perks:['Todo lo de VIP','Acceso backstage total','Cena con artistas','Foto oficial firmada','Transporte privado']
+      },
+      {
+        id:'fullpass', tipo:'Full Pass', precio:150000, icon:'🏕️',
+        desc:'3 días completos + zona de camping dentro del festival.',
+        disponibles:2000, featured:false, popular:false,
+        gradient:'linear-gradient(135deg,#10b981,#06b6d4)',
+        perks:['Acceso 3 días completos','Zona de camping','Duchas y servicios','Lockers seguros','Desayuno incluido']
+      }
+    ];
+
+    let selectedTicket = null;
+
+    document.getElementById('tickets-grid').innerHTML = tickets.map(t => `
+      <div class="ticket-card ${t.featured ? 'featured' : ''}" id="card-${t.id}" style="--card-gradient:${t.gradient}">
+        ${t.popular ? '<span class="ticket-popular">⭐ Más popular</span>' : ''}
+        <div class="ticket-icon">${t.icon}</div>
+        <div class="ticket-tipo">${t.tipo}</div>
+        <div class="ticket-precio"><span class="ticket-moneda">COP</span> ${t.precio.toLocaleString('es-CO')}</div>
+        <div class="ticket-desc">${t.desc}</div>
+        <div class="ticket-disponibles">🔥 ${t.disponibles.toLocaleString()} disponibles</div>
+        <hr class="ticket-divider"/>
+        <div class="ticket-perks">${t.perks.map(p => `<div class="perk">${p}</div>`).join('')}</div>
+        <button class="btn-ticket" id="btn-${t.id}" onclick="abrirModal('${t.id}')">Reservar ${t.tipo}</button>
+      </div>
+    `).join('');
+
+    function abrirModal(id) {
+      selectedTicket = tickets.find(t => t.id === id);
+      document.getElementById('modal-ticket-info').textContent =
+        `${selectedTicket.icon} ${selectedTicket.tipo} – COP ${selectedTicket.precio.toLocaleString('es-CO')}`;
+      document.getElementById('modal-body').innerHTML = document.getElementById('modal-body').innerHTML;
+      document.getElementById('modal-overlay').classList.add('open');
+      // Re-render form
+      document.getElementById('modal-body').innerHTML = `
+        <h2>🎟️ Reservar Entrada</h2>
+        <p style="color:var(--clr-muted);margin-bottom:1.5rem;font-size:.9rem">${selectedTicket.icon} ${selectedTicket.tipo} – COP ${selectedTicket.precio.toLocaleString('es-CO')}</p>
+        <div class="form-group"><label for="input-nombre">Nombre completo</label><input type="text" id="input-nombre" placeholder="Tu nombre"/></div>
+        <div class="form-group"><label for="input-email">Correo electrónico</label><input type="email" id="input-email" placeholder="tu@email.com"/></div>
+        <div class="form-group"><label for="input-cantidad">Cantidad</label><input type="number" id="input-cantidad" min="1" max="10" value="1"/></div>
+        <button class="btn-ticket" id="btn-confirmar" style="margin-top:.5rem">Confirmar Reserva</button>
+      `;
+      document.getElementById('btn-confirmar').onclick = confirmar;
+    }
+
+    function confirmar() {
+      const nombre = document.getElementById('input-nombre').value.trim();
+      const email  = document.getElementById('input-email').value.trim();
+      if (!nombre || !email) { alert('Por favor completa todos los campos.'); return; }
+      document.getElementById('modal-body').innerHTML = `
+        <div class="modal-success">
+          <div class="success-icon">🎉</div>
+          <h3>¡Reserva Confirmada!</h3>
+          <p>¡Hola <strong>${nombre}</strong>! Tu entrada <strong>${selectedTicket.tipo}</strong> fue reservada con éxito.<br/>Recibirás los detalles en <strong>${email}</strong>.</p>
+          <button class="btn-ticket" style="margin-top:1.5rem" onclick="document.getElementById('modal-overlay').classList.remove('open')">¡Perfecto!</button>
+        </div>
+      `;
+    }
+
+    document.getElementById('modal-close').addEventListener('click', () => {
+      document.getElementById('modal-overlay').classList.remove('open');
+    });
+    document.getElementById('modal-overlay').addEventListener('click', e => {
+      if (e.target === document.getElementById('modal-overlay'))
+        document.getElementById('modal-overlay').classList.remove('open');
+    });
+
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+  </script>
+</body>
+</html>

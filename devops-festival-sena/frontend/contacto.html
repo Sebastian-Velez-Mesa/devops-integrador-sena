@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Ponte en contacto con el equipo de DevOps Fest 2026." />
+  <title>Contacto & FAQ – SENA DevOps Fest</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-logo">
+      <span class="logo-icon">🚀</span>
+      <span class="logo-text">DevOps<span class="accent">Fest</span></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link">Inicio</a></li>
+      <li><a href="artistas.html" class="nav-link">Artistas</a></li>
+      <li><a href="tickets.html" class="nav-link">Tickets</a></li>
+      <li><a href="contacto.html" class="nav-link active">Contacto</a></li>
+    </ul>
+    <a href="tickets.html" class="btn-nav" id="btn-nav-tickets">Reservar Cupo</a>
+  </nav>
+
+  <!-- CONTACT & FAQ SECTION -->
+  <section class="contact-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Soporte y Comunidad</span>
+        <h2 class="section-title">¿Tienes <span class="gradient-text">Preguntas</span>?</h2>
+        <p class="section-desc">
+          Completa el formulario para enviarnos un mensaje en vivo o explora las preguntas frecuentes sobre la infraestructura DevOps de este evento.
+        </p>
+      </div>
+
+      <div class="contact-grid">
+        <!-- Formulario -->
+        <div class="contact-form-container">
+          <h3 style="margin-bottom: 1.5rem;">Enviar Mensaje Directo</h3>
+          <form id="contact-form" onsubmit="submitContact(event)">
+            <div class="form-group">
+              <label for="contact-name">Nombre Completo</label>
+              <input type="text" id="contact-name" class="form-input" placeholder="Ej. Ana María" required />
+            </div>
+
+            <div class="form-group">
+              <label for="contact-email">Correo Electrónico</label>
+              <input type="email" id="contact-email" class="form-input" placeholder="ana@sena.edu.co" required />
+            </div>
+
+            <div class="form-group">
+              <label for="contact-message">Mensaje / Consulta</label>
+              <textarea id="contact-message" class="form-input" placeholder="Escribe tu duda o sugerencia..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%;">Enviar Mensaje a la Consola</button>
+          </form>
+        </div>
+
+        <!-- FAQ Accordion -->
+        <div>
+          <h3 style="margin-bottom: 1.5rem; text-align: center;">Preguntas Frecuentes</h3>
+          <div class="faq-container">
+            
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                ¿Qué arquitectura de red utiliza este sitio?
+                <span class="faq-icon">▼</span>
+              </button>
+              <div class="faq-answer">
+                Utiliza una red aislada de tipo bridge llamada <code>devops-network</code>. El frontend (servido por Nginx) se conecta con el backend (API Flask) usando el nombre de servicio del contenedor dentro de la red privada, evitando exponer puertos innecesarios a la red pública.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                ¿Cómo funciona la persistencia de datos?
+                <span class="faq-icon">▼</span>
+              </button>
+              <div class="faq-answer">
+                Los datos enviados mediante este formulario o la reserva de tickets se escriben en <code>contactos.json</code>. Este archivo reside en el volumen con nombre <code>devops-backend-logs</code>, persistiendo la información aun si el contenedor se destruye o se actualiza.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                ¿Qué hace el pipeline de GitHub Actions?
+                <span class="faq-icon">▼</span>
+              </button>
+              <div class="faq-answer">
+                El flujo de CI/CD realiza el chequeo de sintaxis del código Python, ejecuta pruebas automatizadas y realiza un build simulado de las imágenes del Frontend y Backend para asegurar que la aplicación compile sin problemas antes de la entrega final.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                ¿Quiénes organizan este festival?
+                <span class="faq-icon">▼</span>
+              </button>
+              <div class="faq-answer">
+                Este es un proyecto académico de sustentación técnica de DevOps desarrollado por los aprendices del SENA Centro de Tecnología y Manufactura Avanzada (CTMA), en el programa de formación de DevOps y Contenedores Docker.
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLOATING NOTIFICATION CONTAINER -->
+  <div class="notification-container" id="notification-container"></div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="nav-logo">
+          <span class="logo-icon">🚀</span>
+          <span class="logo-text">DevOps<span class="accent">Fest</span> 2026</span>
+        </div>
+        <nav class="footer-nav">
+          <a href="index.html">Inicio</a>
+          <a href="artistas.html">Artistas</a>
+          <a href="tickets.html">Tickets</a>
+          <a href="contacto.html">Contacto</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 SENA DevOps Fest. Desarrollado colaborativamente bajo cultura DevOps.</p>
+        <div class="footer-tech">
+          <span class="tech-tag">HTML5/CSS3</span>
+          <span class="tech-tag">Flask API</span>
+          <span class="tech-tag">Docker Compose</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    const backendUrl = "http://localhost:5000";
+
+    // Toggle FAQ
+    function toggleFaq(button) {
+      const faqItem = button.parentElement;
+      faqItem.classList.toggle('active');
+    }
+
+    // Mostrar notificaciones
+    function showNotification(message, type = 'success') {
+      const container = document.getElementById('notification-container');
+      const notif = document.createElement('div');
+      notif.className = `notification ${type}`;
+      notif.innerHTML = `
+        <span class="notification-msg">${message}</span>
+        <button class="notification-close" onclick="this.parentElement.remove()">×</button>
+      `;
+      container.appendChild(notif);
+
+      // Eliminar después de 4 segundos
+      setTimeout(() => {
+        notif.style.opacity = '0';
+        setTimeout(() => notif.remove(), 300);
+      }, 4000);
+    }
+
+    // Enviar Formulario de Contacto
+    async function submitContact(event) {
+      event.preventDefault();
+      const nombre = document.getElementById('contact-name').value;
+      const email = document.getElementById('contact-email').value;
+      const mensaje = document.getElementById('contact-message').value;
+
+      const payload = {
+        nombre: nombre,
+        email: email,
+        mensaje: mensaje
+      };
+
+      try {
+        const response = await fetch(`${backendUrl}/api/contacto`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const resJson = await response.json();
+        
+        if (response.ok) {
+          showNotification(`✅ ¡Mensaje guardado! Los datos se persistieron en el volumen de Docker.`, 'success');
+          document.getElementById('contact-form').reset();
+        } else {
+          showNotification(`❌ Error al enviar mensaje: ${resJson.message}`, 'error');
+        }
+      } catch (error) {
+        showNotification(`⚠️ No hay conexión con el Backend. Los logs locales muestran fallo del servicio.`, 'error');
+        console.error("Error al enviar mensaje:", error);
+      }
+    }
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+  </script>
+</body>
+</html>

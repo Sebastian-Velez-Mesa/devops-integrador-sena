@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SENA DevOps & Cloud Fest 2026 – Fusionando código y ritmo en la nube." />
+  <title>SENA DevOps & Cloud Fest 2026</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-logo">
+      <span class="logo-icon">🚀</span>
+      <span class="logo-text">DevOps<span class="accent">Fest</span></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link active">Inicio</a></li>
+      <li><a href="artistas.html" class="nav-link">Artistas</a></li>
+      <li><a href="tickets.html" class="nav-link">Tickets</a></li>
+      <li><a href="contacto.html" class="nav-link">Contacto</a></li>
+    </ul>
+    <a href="tickets.html" class="btn-nav" id="btn-nav-tickets">Reservar Cupo</a>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="grid-overlay"></div>
+    </div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">🐳 100% Contenedores & Pipelines</div>
+        <h1 class="hero-title">
+          SENA <span class="gradient-text">DevOps</span><br />
+          & Cloud Fest 2026
+        </h1>
+        <p class="hero-subtitle">
+          El festival académico-musical donde la infraestructura como código se encuentra con el ritmo de la nube. Aprende de expertos y disfruta de bandas con ritmos digitales sincronizados.
+        </p>
+        <div class="hero-date">
+          <span class="date-item">📅 15 – 17 Agosto 2026</span>
+          <span class="date-sep">|</span>
+          <span class="date-item">📍 CTMA - Medellín, CO</span>
+        </div>
+        <div class="hero-actions">
+          <a href="tickets.html" class="btn-primary" id="btn-hero-tickets">Conseguir Pases</a>
+          <a href="artistas.html" class="btn-secondary" id="btn-hero-lineup">Ver Lineup</a>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <span>Consola DevOps</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- DEVOPS MONITOR DASHBOARD -->
+  <section class="devops-section" id="monitor">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Infraestructura del Proyecto</span>
+        <h2 class="section-title">DevOps <span class="gradient-text">Live Monitor</span></h2>
+        <p class="section-desc">
+          Monitoreo en vivo de los microservicios Docker que orquestan este portal. La comunicación se realiza en tiempo real a través de la red interna bridge de Docker.
+        </p>
+      </div>
+
+      <div class="dashboard-grid">
+        <!-- Panel 1: Estado y Métricas -->
+        <div class="panel-card" id="card-metrics">
+          <h3>🩺 Estado del API Backend</h3>
+          <div class="health-indicator">
+            <span class="status-text">Healthcheck Status:</span>
+            <span class="status-badge" id="backend-health">
+              <span class="status-dot"></span>
+              <span class="badge-text">Desconectado</span>
+            </span>
+          </div>
+          
+          <div class="metric-row">
+            <div class="metric-item">
+              <span>Host OS:</span>
+              <span id="metric-os">—</span>
+            </div>
+            <div class="metric-item">
+              <span>Python Version:</span>
+              <span id="metric-python">—</span>
+            </div>
+            <div class="metric-item">
+              <span>Entorno de Ejecución:</span>
+              <span id="metric-env">—</span>
+            </div>
+            <div class="metric-item">
+              <span>Tiempo de Actividad (Uptime):</span>
+              <span id="metric-uptime">—</span>
+            </div>
+            <div class="metric-item">
+              <span>Peticiones Registradas:</span>
+              <span id="metric-requests">—</span>
+            </div>
+            <div class="metric-item">
+              <span>Reservas Persistidas (Volumen):</span>
+              <span id="metric-contacts">—</span>
+            </div>
+            <div class="metric-item">
+              <span>Tamaño Log (`festival.log`):</span>
+              <span id="metric-logsize">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 2: Docker Containers & Logs -->
+        <div class="panel-card" id="card-docker">
+          <h3>🐳 Contenedores en Docker Compose</h3>
+          
+          <div class="containers-status">
+            <!-- Frontend Container -->
+            <div class="container-pill">
+              <div class="container-info">
+                <span class="container-icon">🌐</span>
+                <div>
+                  <div class="container-name">devops-frontend</div>
+                  <div class="container-port">Puerto 8080 -> 80</div>
+                </div>
+              </div>
+              <span class="status-badge">
+                <span class="status-dot healthy"></span>
+                <span style="color:var(--color-success)">Corriendo</span>
+              </span>
+            </div>
+
+            <!-- Backend Container -->
+            <div class="container-pill">
+              <div class="container-info">
+                <span class="container-icon">🐍</span>
+                <div>
+                  <div class="container-name">devops-backend</div>
+                  <div class="container-port">Puerto 5000 -> 5000</div>
+                </div>
+              </div>
+              <span class="status-badge" id="container-backend-status">
+                <span class="status-dot"></span>
+                <span>Desconectado</span>
+              </span>
+            </div>
+          </div>
+
+          <h3 style="margin-top: 2rem; margin-bottom: 1rem;">🖥️ Salida de Logs en Vivo</h3>
+          <div class="terminal">
+            <div class="terminal-header">
+              <div class="term-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <span>bash - devops-backend:/app/logs/festival.log</span>
+            </div>
+            <div class="terminal-body" id="log-terminal">
+              <div class="term-info">Iniciando escucha de logs...</div>
+              <div class="term-info">Esperando conexión con el contenedor de backend...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COUNTDOWN SECTION -->
+  <section class="countdown-section">
+    <div class="container">
+      <h2 class="countdown-title">El Git Merge Inicial Comienza En</h2>
+      <div class="countdown" id="countdown">
+        <div class="countdown-item">
+          <span class="count-num" id="count-days">00</span>
+          <span class="count-label">Días</span>
+        </div>
+        <span class="count-sep">:</span>
+        <div class="countdown-item">
+          <span class="count-num" id="count-hours">00</span>
+          <span class="count-label">Horas</span>
+        </div>
+        <span class="count-sep">:</span>
+        <div class="countdown-item">
+          <span class="count-num" id="count-minutes">00</span>
+          <span class="count-label">Minutos</span>
+        </div>
+        <span class="count-sep">:</span>
+        <div class="countdown-item">
+          <span class="count-num" id="count-seconds">00</span>
+          <span class="count-label">Segundos</span>
+        </div>
+      </div>
+      <a href="tickets.html" class="btn-primary" id="btn-countdown-tickets">¡Registrarme Ahora!</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="nav-logo">
+          <span class="logo-icon">🚀</span>
+          <span class="logo-text">DevOps<span class="accent">Fest</span> 2026</span>
+        </div>
+        <nav class="footer-nav">
+          <a href="index.html">Inicio</a>
+          <a href="artistas.html">Artistas</a>
+          <a href="tickets.html">Tickets</a>
+          <a href="contacto.html">Contacto</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 SENA DevOps Fest. Desarrollado colaborativamente bajo cultura DevOps.</p>
+        <div class="footer-tech">
+          <span class="tech-tag">HTML5/CSS3</span>
+          <span class="tech-tag">Flask API</span>
+          <span class="tech-tag">Docker Compose</span>
+          <span class="tech-tag">GitHub Actions</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Notification Container -->
+  <div class="notification-container" id="notification-container"></div>
+
+  <!-- SCRIPT -->
+  <script>
+    // Cuenta regresiva
+    const festivalDate = new Date('2026-08-15T18:00:00');
+    function updateCountdown() {
+      const now = new Date();
+      const diff = festivalDate - now;
+      if (diff <= 0) {
+        document.getElementById('countdown').innerHTML = "<h3>¡El festival ha comenzado! Sintoniza la rama main.</h3>";
+        return;
+      }
+      document.getElementById('count-days').textContent    = String(Math.floor(diff / 86400000)).padStart(2,'0');
+      document.getElementById('count-hours').textContent   = String(Math.floor((diff % 86400000) / 3600000)).padStart(2,'0');
+      document.getElementById('count-minutes').textContent = String(Math.floor((diff % 3600000) / 60000)).padStart(2,'0');
+      document.getElementById('count-seconds').textContent = String(Math.floor((diff % 60000) / 1000)).padStart(2,'0');
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // DevOps Live Monitor integration
+    const backendUrl = "http://localhost:5000";
+    const logTerminal = document.getElementById('log-terminal');
+
+    function appendLogLine(cmd, msg, type = 'info') {
+      const line = document.createElement('div');
+      if (cmd) {
+        const cmdSpan = document.createElement('span');
+        cmdSpan.className = 'term-cmd';
+        cmdSpan.textContent = cmd + " ";
+        line.appendChild(cmdSpan);
+      }
+      const msgSpan = document.createElement('span');
+      msgSpan.className = 'term-' + type;
+      msgSpan.textContent = msg;
+      line.appendChild(msgSpan);
+      
+      logTerminal.appendChild(line);
+      logTerminal.scrollTop = logTerminal.scrollHeight;
+
+      // Mantener solo los últimos 30 logs en el visor para no saturar
+      while (logTerminal.children.length > 30) {
+        logTerminal.removeChild(logTerminal.firstChild);
+      }
+    }
+
+    async function fetchStats() {
+      try {
+        const response = await fetch(`${backendUrl}/api/stats`);
+        if (!response.ok) throw new Error("Backend no responde correctamente");
+        const resJson = await response.json();
+        const stats = resJson.data;
+
+        // Actualizar UI
+        document.getElementById('backend-health').innerHTML = `
+          <span class="status-dot healthy"></span>
+          <span class="badge-text" style="color: var(--color-success)">Saludable</span>
+        `;
+        document.getElementById('container-backend-status').innerHTML = `
+          <span class="status-dot healthy"></span>
+          <span style="color: var(--color-success)">Corriendo</span>
+        `;
+
+        document.getElementById('metric-os').textContent = `${stats.os_platform} (${stats.os_release})`;
+        document.getElementById('metric-python').textContent = stats.python_version;
+        document.getElementById('metric-env').textContent = stats.container_environment;
+        document.getElementById('metric-uptime').textContent = stats.uptime_formatted;
+        document.getElementById('metric-requests').textContent = stats.request_count;
+        document.getElementById('metric-contacts').textContent = stats.contacts_count;
+        document.getElementById('metric-logsize').textContent = stats.log_file_size_bytes + " Bytes";
+
+        // Agregar log simulado en el monitor terminal
+        const timestamp = new Date().toLocaleTimeString();
+        appendLogLine(
+          `[${timestamp}]`, 
+          `HTTP GET /api/stats 200 OK - Petición #${stats.request_count} (Uptime: ${stats.uptime_formatted})`, 
+          'output'
+        );
+
+        if (stats.contacts_persisted && stats.contacts_persisted.length > 0) {
+          const ultimo = stats.contacts_persisted[stats.contacts_persisted.length - 1];
+          // Añadir log de base de datos
+          if (!window.lastReportedContactId || window.lastReportedContactId !== ultimo.id) {
+            window.lastReportedContactId = ultimo.id;
+            appendLogLine(
+              `[DB WRITE]`, 
+              `Nuevo registro persistido: "${ultimo.nombre}" <${ultimo.email}> mensaje: "${ultimo.mensaje.substring(0, 20)}..."`, 
+              'info'
+            );
+          }
+        }
+      } catch (error) {
+        // Poner estado en desconectado
+        document.getElementById('backend-health').innerHTML = `
+          <span class="status-dot unhealthy"></span>
+          <span class="badge-text" style="color: var(--color-danger)">Unhealthy</span>
+        `;
+        document.getElementById('container-backend-status').innerHTML = `
+          <span class="status-dot unhealthy"></span>
+          <span style="color: var(--color-danger)">Caído</span>
+        `;
+        
+        // Resetear métricas
+        document.getElementById('metric-uptime').textContent = "Inalcanzable";
+        document.getElementById('metric-logsize').textContent = "—";
+        
+        const timestamp = new Date().toLocaleTimeString();
+        appendLogLine(
+          `[${timestamp} ERROR]`, 
+          `Error de conexión con el backend: ${error.message}. ¿Está docker-compose levantado?`, 
+          'cmd'
+        );
+      }
+    }
+
+    // Consultar estadísticas inmediatamente y programar cada 3 segundos
+    fetchStats();
+    setInterval(fetchStats, 3000);
+  </script>
+</body>
+</html>
